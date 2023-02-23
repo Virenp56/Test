@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample Form</title>
+</head>
+
+<body>
+
+    <form id="form">
+        <label for="firstName">First Name: </label><input type="text" name="firstName" id="firstName"><br>
+        <label for="lastName">Last Name: </label><input type="text" name="lastName" id="lastName"><br>
+        <label for="technology">Technology: </label><input type="text" name="technology" id="technology"><br>
+        <button type="submit">Submit Data</button>
+        <button>Update Data</button><br>
+    </form>
+    <script>
+        //Table Header
+        let headerObj = {
+            id: "Id",
+            firstName: "First_Name",
+            lastName: "Last_Name",
+            technology: "Technology",
+            action: "Action"
+        }
+
+        let table = document.createElement("table");
+
+        let tr = document.createElement("tr");
+
+        function tableHeader(table, headerObj) {
+            let thead = table.createTHead();
+            let tr = document.createElement("tr");
+            thead.appendChild(tr);
+            for (const key in headerObj) {
+                let th = document.createElement("th");
+                let text = document.createTextNode(headerObj[key]);
+                th.appendChild(text);
+                tr.appendChild(th);
+            }
+            table.appendChild(tr)
+        }
+
+
+        for (const key in headerObj) {
+            let th = document.createElement("th")
+            let headerText = document.createTextNode(headerObj[key]);
+            th.appendChild(headerText);
+            tr.appendChild(th)
+        }
+
+
+        tableHeader(table, headerObj)
+
+
+        //Table Body
+        let form = document.getElementById("form");
+
+        form.addEventListener('submit', event => {
+            // event.preventDefault();
+            // const formData = new FormData(form);
+            // let formDataObject = Object.fromEntries(formData.entries());
+            // let formDataJsonString = JSON.stringify(formDataObject);
+            // console.log(formDataJsonString);
+
+            let fname = document.getElementById("firstName").value;
+            let lname = document.getElementById("lastName").value;
+            let technology = document.getElementById("technology").value;
+
+
+            const requestOptions = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    firstName: fname,
+                    lastName: lname,
+                    technology: technology,
+                }),
+            };
+
+            fetch('http://localhost:3000/employee', requestOptions)
+                .then(response => response.json())
+                .then(data => data)
+                .catch(error => console.error(error));
+        });
+
+
+
+        fetch('http://localhost:3000/employee')
+            .then(response => response.json())
+            .then(data => {
+                let tbody = table.createTBody();
+                for (const element of data) {
+                    let tr = document.createElement("tr");
+
+
+                    let td1 = document.createElement("td");
+                    let text1 = document.createTextNode(element["id"]);
+                    td1.appendChild(text1);
+                    tr.appendChild(td1);
+
+
+                    let td2 = document.createElement("td");
+                    let text2 = document.createTextNode(element["firstName"]);
+                    td2.appendChild(text2);
+                    tr.appendChild(td2);
+
+
+                    let td3 = document.createElement("td");
+                    let text3 = document.createTextNode(element["lastName"]);
+                    td3.appendChild(text3);
+                    tr.appendChild(td3);
+
+
+                    let td4 = document.createElement("td");
+                    let text4 = document.createTextNode(element["technology"]);
+                    td4.appendChild(text4);
+                    tr.appendChild(td4);
+
+                    let td5 = document.createElement("td");
+                    let btnDelete = document.createElement("button");
+                    let deleteText = document.createTextNode("Delete");
+                    btnDelete.appendChild(deleteText);
+                    let btnEdit = document.createElement("button");
+                    let editText = document.createTextNode("Edit");
+                    btnEdit.appendChild(editText);
+                    td5.appendChild(btnDelete);
+                    td5.appendChild(btnEdit);
+                    tr.appendChild(td5);
+
+                    tbody.appendChild(tr);
+
+                }
+            })
+            .catch(error => console.error(error));
+
+        //console.log(newData);
+
+
+        let body = document.querySelector("body");
+        body.appendChild(table);
+    </script>
+</body>
+
+</html>
