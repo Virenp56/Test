@@ -10,38 +10,79 @@ body {
     width: 100%;
     overflow: hidden;
     display: flex;
+    font-size: 18px;
+    font-family: "Inter";
+}
+
+.container {
+    flex-grow: 1;
+    overflow: auto;
+    display: flex;
     flex-direction: column;
-    align-items: center;
-    font-size: 20px;
-    font-family: 'Inter';
 }
 
 #form {
     box-shadow: 1px 2px 11px #888888;
     border-radius: 15px;
     padding: 30px;
-    margin: 50px 0;
+    margin: 30px 30px;
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+    flex-wrap: wrap;
 }
+
+.fname-div,
+.lname-div,
+.techno-div,
+.button-div {
+    display: flex;
+    align-items: center;
+}
+
+#submitButton,
+#updateButton {
+    cursor: pointer;
+    border-radius: 5px;
+    border: 0;
+    background-color: #39eba9;
+}
+
+#submitButton:disabled {
+    opacity: 0.5;
+}
+
+#updateButton:disabled {
+    opacity: 0.5;
+}
+
 
 #form input,
 #submitButton,
 #updateButton {
-    margin: 15px 0;
-    font-size: 20px;
+    font-size: 18px;
+    margin: 0 15px;
+    padding: 8px;
 }
 
 .table-div {
-    overflow: auto;
+    margin: 0 30px;
+    overflow-x: auto;
+    position: relative;
+    min-height: 500px;
+    margin-bottom: 30px;
+    border-radius: 15px;
 }
 
 .table {
-    font-family: Arial, Helvetica, sans-serif;
+    width: 100%;
     border-collapse: collapse;
+    min-width: 700px;
 
-    /* overflow: auto; */
-    padding: 0px 30px;
+}
+
+.thead {
+    position: sticky;
+    top: 0;
 }
 
 
@@ -50,7 +91,6 @@ body {
     padding: 8px;
     text-align: center;
 }
-
 
 .table tr:nth-child(even) {
     background-color: #f2f2f2;
@@ -63,15 +103,13 @@ body {
 .table th {
     padding-top: 12px;
     padding-bottom: 12px;
-    background-color: #04AA6D;
+    background-color: #04aa6d;
     color: white;
     text-align: center;
-
 }
 
 .deleteButton {
     background: rgb(231, 103, 103);
-
 }
 
 .editButton {
@@ -80,9 +118,64 @@ body {
 
 .editButton,
 .deleteButton {
+
+    cursor: pointer;
     font-size: 20px;
     padding: 10px;
     margin: 0 10px;
     border-radius: 5px;
     border: 0;
+}
+
+@media screen and (max-width: 1500px) {
+
+    #submitButton,
+    #updateButton {
+        margin-top: 15px;
+        margin-right: 15px;
+        margin-left: 0px;
+    }
+}
+
+@media screen and (max-width: 1220px) {
+
+    .fname-div,
+    .lname-div,
+    .techno-div,
+    .button-div {
+        margin-top: 15px;
+    }
+
+}
+
+@media screen and (max-width: 850px) {
+    #form {
+        flex-direction: column;
+    }
+
+    .fname-div,
+    .lname-div,
+    .techno-div,
+    .button-div {
+        justify-content: space-around;
+    }
+
+    #form input {
+        width: 75%;
+    }
+}
+
+@media screen and (max-width: 500px) {
+
+    .fname-div,
+    .lname-div,
+    .techno-div {
+        flex-direction: column;
+        align-items: start;
+    }
+
+    #form input {
+        margin: 10px 0;
+        width: 100%;
+    }
 }
