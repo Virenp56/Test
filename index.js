@@ -141,6 +141,91 @@ window.addEventListener('load', (event) => {
     getData();
 });
 
+
+
+//for filter
+ function populateTable() {
+        // Clear the existing table rows
+
+        tBody.innerHTML = " ";
+        // Get the current filter value
+        const filterValue = filterSelect.value;
+        console.log(filterValue);
+
+        // Fetch the JSON data from JSON-Server using the Fetch API
+        fetch('http://localhost:3000/employee')
+            .then(response => response.json())
+            .then(data => {
+
+                // let newdata = filterValue === 'all' ? data : data.filter(item => item.technology == filterValue)
+                for (const iterator of data) {
+                    if (filterValue === 'all' || iterator.technology === filterValue) {
+                        let bodyRow = document.createElement("tr");
+                        tBody.appendChild(bodyRow);
+                        for (const key in empHeader) {
+                            let td = document.createElement('td');
+                            let thText = document.createTextNode(iterator[key]);
+                            td.appendChild(thText);
+                            bodyRow.appendChild(td);
+                        }
+                        let td = document.createElement('td');
+                        let deleteButton = document.createElement('button');
+                        let deleteText = document.createTextNode('Delete');
+                        deleteButton.appendChild(deleteText);
+                        deleteButton.className = "deleteButton";
+                        deleteButton.addEventListener('click', () => {
+                            deleteEmpolyee(iterator.id);
+                            table.deleteRow(bodyRow.rowIndex);
+                        });
+                        td.appendChild(deleteButton);
+
+                        let editButton = document.createElement('button');
+                        let editText = document.createTextNode('Edit');
+                        editButton.appendChild(editText);
+                        editButton.className = "editButton";
+                        editButton.addEventListener('click', () => {
+                            editEmployee(iterator);
+                        });
+                        td.appendChild(editButton);
+                        bodyRow.appendChild(td);
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching JSON data:', error);
+            });
+    }
+
+//add optiins to filter dropdown
+    function addOptions() {
+
+        fetch('http://localhost:3000/employee')
+            .then(response => response.json())
+            .then(data => {
+                let newData = data.map(item => item.technology);
+                let newSet = new Set(newData);
+                let a = [...newSet];
+                console.log(a);
+                a.forEach(element => {
+                    let option = document.createElement("option");
+                    let text = document.createTextNode(element);
+                    option.appendChild(text);
+                    filterSelect.appendChild(option)
+                });
+            })
+    }
+    window.addEventListener('load', () => {
+        populateTable();
+        addOptions();
+    })
+
+// Add on change
+    filterSelect.addEventListener('change',
+        (e) => {
+            // e.preventDefault(),
+            populateTable()
+        })
+
 let body = document.querySelector("body");
 let container = document.querySelector(".container");
 tableDiv.appendChild(table);
